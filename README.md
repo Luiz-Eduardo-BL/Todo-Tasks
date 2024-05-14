@@ -1,6 +1,11 @@
-# Todo-Tasks 📝✨
+<h1 align="center"> Todo-Tasks 📝✨ </h1>  
+
+<p align="center"><img src="http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=GREEN&style=for-the-badge"/></p>
 
 Bem-vindo ao repositório do Todo-Tasks, o seu novo assistente de tarefas diárias que torna a organização divertida e eficiente!
+
+## 📌 Índice:
+
 
 ## Introdução 🚀
 
@@ -76,3 +81,4 @@ Este projeto foi criado com ❤️ por Luiz Eduardo. Para qualquer dúvida ou fe
 ---
 
 Feito com 💻 e ☕ por [Luiz Eduardo](https://github.com/Luiz-Eduardo-BL).
+</div>
