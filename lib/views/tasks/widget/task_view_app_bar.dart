@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TaskViewAppBar extends StatelessWidget implements PreferredSizeWidget {
   const TaskViewAppBar({super.key});
@@ -6,13 +7,13 @@ class TaskViewAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 150,
+      height: ScreenUtil().setHeight(80),
       child: Padding(
-        padding: const EdgeInsets.only(left: 20),
+        padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(20)),
         child: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 20),
+              padding: EdgeInsets.only(top: ScreenUtil().setHeight(20)),
               child: GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
@@ -22,6 +23,17 @@ class TaskViewAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
             ),
+            if (ScreenUtil().screenWidth > 600)
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: ScreenUtil().setWidth(20)),
+                  child: Text(
+                    'Task Title', // Replace with your actual title
+                    style: TextStyle(fontSize: ScreenUtil().setSp(24)),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
@@ -29,5 +41,5 @@ class TaskViewAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(100);
+  Size get preferredSize => Size.fromHeight(ScreenUtil().setHeight(100));
 }

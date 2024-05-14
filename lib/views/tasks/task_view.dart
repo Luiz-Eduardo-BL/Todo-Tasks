@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:todotasks/extensions/space_exs.dart';
 import 'package:todotasks/utils/app_colors.dart';
 import 'package:todotasks/utils/app_str.dart';
@@ -23,15 +25,18 @@ class _TaskViewState extends State<TaskView> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(
+      context,
+      designSize: const Size(360, 690),
+    );
+
     var textTheme = Theme.of(context).textTheme;
 
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
       child: Scaffold(
         appBar: const TaskViewAppBar(),
-        body: SizedBox(
-          width: double.infinity,
-          height: double.infinity,
+        body: Expanded(
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -48,52 +53,52 @@ class _TaskViewState extends State<TaskView> {
 
   Widget _buildBottomSideButtons() {
     return Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    MaterialButton(
-                      onPressed: () {},
-                      minWidth: 150,
-                      height: 55,
-                      color: const Color.fromARGB(255, 243, 114, 105),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.close,
-                            color: Colors.black,
-                          ),
-                          5.w,
-                          const Text(
-                            AppStr.deleteTask,
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    MaterialButton(
-                      onPressed: () {},
-                      minWidth: 150,
-                      height: 55,
-                      color: AppColors.primaryColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Text(
-                        AppStr.addTaskString,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
+      padding: const EdgeInsets.only(bottom: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          MaterialButton(
+            onPressed: () {},
+            minWidth: 150,
+            height: 55,
+            color: const Color.fromARGB(255, 243, 114, 105),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.close,
+                  color: Colors.black,
                 ),
-              );
+                5.w,
+                const Text(
+                  AppStr.deleteTask,
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          MaterialButton(
+            onPressed: () {},
+            minWidth: 150,
+            height: 55,
+            color: AppColors.primaryColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Text(
+              AppStr.addTaskString,
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildMainTaskViewActivity(TextTheme textTheme, BuildContext context) {
@@ -117,22 +122,6 @@ class _TaskViewState extends State<TaskView> {
                 builder: (_) => SizedBox(
                   width: double.infinity,
                   height: 400,
-                  // child: CupertinoDatePicker(
-                  //   mode: CupertinoDatePickerMode.time,
-                  //   initialDateTime: DateTime.now(),
-                  //   onDateTimeChanged: (value) {
-                  //     setState(() {
-                  //       selectedTime =
-                  //           TimeOfDay.fromDateTime(value);
-                  //       // controller.selection = TextSelection(
-                  //       //   baseOffset: controller.text.length,
-                  //       //   extentOffset: controller.text.length,
-                  //       // );
-                  //     });
-
-                  //     // FocusScope.of(context).requestFocus(FocusNode());
-                  //   },
-                  // ),
                   child: CupertinoTimerPicker(
                       onTimerDurationChanged: (value) {
                         setState(() {
@@ -164,10 +153,6 @@ class _TaskViewState extends State<TaskView> {
                       setState(() {
                         const Locale('pt', 'BR');
                         selectedTime = TimeOfDay.fromDateTime(value);
-                        // controller.selection = TextSelection(
-                        //   baseOffset: controller.text.length,
-                        //   extentOffset: controller.text.length,
-                        // );
                       });
                       //FocusScope.of(context).requestFocus(FocusNode());
                     },
@@ -185,32 +170,39 @@ class _TaskViewState extends State<TaskView> {
   Widget _buildTopSideTexts(TextTheme textTheme) {
     return SizedBox(
       width: double.infinity,
-      height: 100,
+      height: ScreenUtil()
+          .setHeight(100), // Set the height to 100% of the screen height
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(
-            width: 52,
-            child: Divider(
+          SizedBox(
+            width: ScreenUtil()
+                .setWidth(52), // Set the width to 52% of the screen width
+            child: const Divider(
               thickness: 2,
             ),
           ),
-          RichText(
-              text: TextSpan(
-            text: AppStr.addNewTask,
-            style: textTheme.titleLarge,
-            children: const [
-              TextSpan(
-                  text: AppStr.taskStrnig,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                  )),
-            ],
-          )),
-          const SizedBox(
-            width: 52,
-            child: Divider(
+          SizedBox(
+            width: ScreenUtil()
+                .setWidth(200), // Set the width to 200% of the screen width
+            child: RichText(
+                text: TextSpan(
+              text: AppStr.addNewTask,
+              style: textTheme.titleLarge,
+              children: const [
+                TextSpan(
+                    text: AppStr.taskStrnig,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                    )),
+              ],
+            )),
+          ),
+          SizedBox(
+            width: ScreenUtil()
+                .setWidth(52), // Set the width to 52% of the screen width
+            child: const Divider(
               thickness: 2,
             ),
           ),

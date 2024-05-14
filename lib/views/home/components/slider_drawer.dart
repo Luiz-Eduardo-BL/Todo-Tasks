@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:todotasks/extensions/space_exs.dart';
 
@@ -38,7 +39,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 80),
+      padding: EdgeInsets.symmetric(vertical: ScreenUtil().setHeight(80)),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: AppColors.quaternaryGradientColor,
@@ -54,8 +55,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
             },
             child: Lottie.asset(
               selectedAvatar,
-              width: 150,
-              height: 150,
+              width: ScreenUtil().setWidth(100),
+              height: ScreenUtil().setHeight(100),
             ),
           ),
           20.h,
@@ -68,26 +69,26 @@ class _CustomDrawerState extends State<CustomDrawer> {
             style: textTheme.displaySmall
           ),
           Container(
-            margin: const EdgeInsets.symmetric(
-              horizontal: 30,
-              vertical: 20,
+            margin: EdgeInsets.symmetric(
+              horizontal: ScreenUtil().setWidth(30),
+              vertical: ScreenUtil().setHeight(20),
             ),
             width: double.infinity,
-            height: 600,
+            height: ScreenUtil().setHeight(400), // erro talvez aq 
             child: ListView.builder(
               itemCount: icons.length,
               itemBuilder: (BuildContext context, int index) {
                 return InkWell(
                   onTap: () {
-                    log(texts[index] + ' Item Selecionado!');
+                    log('${texts[index]}tem Selecionado!');
                   },
                   child: Container(
-                    margin: const EdgeInsets.all(5),
+                    margin: EdgeInsets.all(ScreenUtil().setWidth(5)),
                     child: ListTile(
                       leading: Icon(
                         icons[index],
                         color: Colors.white,
-                        size: 25,
+                        size: ScreenUtil().setWidth(25),
                       ),
                       title: Text(
                         texts[index],
@@ -109,7 +110,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Escolha seu Avatar'),
+          title: const Text('Escolha seu Avatar'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -136,13 +137,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
         children: [
           Lottie.asset(
             'assets/lottie/$avatarPath',
-            width: 50,
-            height: 50,
+            width: ScreenUtil().setWidth(80),
+            height: ScreenUtil().setWidth(80),
           ),
-          SizedBox(width: 10),
+          10.w,
           Text(
             avatarPath,
-            style: TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 16),
           ),
         ],
       ),

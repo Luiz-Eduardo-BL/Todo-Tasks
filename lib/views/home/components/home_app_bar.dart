@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 
 class HomeAppBar extends StatefulWidget {
@@ -11,7 +12,8 @@ class HomeAppBar extends StatefulWidget {
   State<HomeAppBar> createState() => _HomeAppBarState();
 }
 
-class _HomeAppBarState extends State<HomeAppBar> with SingleTickerProviderStateMixin{
+class _HomeAppBarState extends State<HomeAppBar>
+    with SingleTickerProviderStateMixin {
   late AnimationController animatecontroller;
   bool isDrawerOpen = false;
 
@@ -33,10 +35,10 @@ class _HomeAppBarState extends State<HomeAppBar> with SingleTickerProviderStateM
   void onDrawerToggle() {
     setState(() {
       isDrawerOpen = !isDrawerOpen;
-      if(isDrawerOpen){
+      if (isDrawerOpen) {
         animatecontroller.forward();
         widget.drawerKey.currentState!.openSlider();
-      }else{
+      } else {
         animatecontroller.reverse();
         widget.drawerKey.currentState!.closeSlider();
       }
@@ -47,32 +49,37 @@ class _HomeAppBarState extends State<HomeAppBar> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 100,
+      height: ScreenUtil().setHeight(80), // Use ScreenUtil to set the height
       child: Padding(
-        padding: const EdgeInsets.only(top: 40),
+        padding: EdgeInsets.only(
+            top: ScreenUtil()
+                .setHeight(20)), // Use ScreenUtil to set the padding
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 20),
+              padding: EdgeInsets.only(
+                  left: ScreenUtil()
+                      .setWidth(20)), // Use ScreenUtil to set the padding
               child: IconButton(
                 onPressed: onDrawerToggle,
                 icon: AnimatedIcon(
                   icon: AnimatedIcons.menu_close,
                   progress: animatecontroller,
-                  size: 30,
+                  size: ScreenUtil()
+                      .setWidth(30), // Use ScreenUtil to set the icon size
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 20),
+              padding: EdgeInsets.only(
+                  right: ScreenUtil()
+                      .setWidth(20)), // Use ScreenUtil to set the padding
               child: IconButton(
-                onPressed: () {
-
-                },
+                onPressed: () {},
                 icon: const Icon(
                   CupertinoIcons.trash_fill,
-                  size: 30,
+                  size: 25,
                 ),
               ),
             ),

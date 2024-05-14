@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
@@ -58,16 +59,16 @@ class _HomeViewState extends State<HomeView> {
 
         children: [
           Container(
-            margin: const EdgeInsets.only(top: 50),
+            margin: EdgeInsets.only(top: ScreenUtil().setHeight(50)),
             width: double.infinity,
-            height: 100,
+            height: ScreenUtil().setHeight(100),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(
-                  width: 35,
-                  height: 35,
-                  child: CircularProgressIndicator(
+                SizedBox(
+                  width: ScreenUtil().setWidth(35),
+                  height: ScreenUtil().setWidth(35),
+                  child: const CircularProgressIndicator(
                     value: 1 / 3,
                     backgroundColor: Colors.grey,
                     valueColor: AlwaysStoppedAnimation(
@@ -84,12 +85,12 @@ class _HomeViewState extends State<HomeView> {
                   children: [
                     Text(
                       AppStr.mainTitle,
-                      style: textTheme.displayLarge,
+                      style: textTheme.displayLarge?.copyWith(fontSize: ScreenUtil().setSp(24)),
                     ),
-                    3.h,
+                    3.w,
                     Text(
                       "1 de 3 Tarefas",
-                      style: textTheme.titleMedium,
+                      style: textTheme.titleMedium?.copyWith(fontSize: ScreenUtil().setSp(18)),
                     ),
                   ]
                 ),
@@ -97,11 +98,11 @@ class _HomeViewState extends State<HomeView> {
             )
           ),
 
-          const Padding(
-            padding: EdgeInsets.only(top: 10),
+          Padding(
+            padding: EdgeInsets.only(top: ScreenUtil().setHeight(10)),
             child: Divider(
-              thickness: 2,
-              indent: 100,
+              thickness: ScreenUtil().setHeight(2),
+              indent: ScreenUtil().setWidth(100),
             ),
           ),
 
@@ -120,14 +121,15 @@ class _HomeViewState extends State<HomeView> {
                 background: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.delete_outline,
                       color: Colors.red,
+                      size: ScreenUtil().setWidth(24),
                     ),
                     5.w,
-                    const Text(
+                    Text(
                       AppStr.deletedTask,
-                      style: TextStyle(color: Colors.red)
+                      style: TextStyle(color: Colors.red, fontSize: ScreenUtil().setSp(16))
                     ),
                   ],
                 ),
@@ -141,18 +143,19 @@ class _HomeViewState extends State<HomeView> {
               children: [
                 FadeIn(
                   child: SizedBox(
-                    width: 250,
-                    height: 250,
+                    width: ScreenUtil().setWidth(250),
+                    height: ScreenUtil().setWidth(250),
                     child: Lottie.asset(
                       lottieURL,
-                      animate: teste.isNotEmpty ? false : true,
+                      animate: teste.isNotEmpty? false : true,
                     ),
                   ),
                 ),
                 FadeInUp(
-                  from: 30,
-                  child: const Text(
+                  from: ScreenUtil().setHeight(30),
+                  child: Text(
                     AppStr.doneAllTask,
+                    style: TextStyle(fontSize: ScreenUtil().setSp(20)),
                   ),
                 ),
               ],

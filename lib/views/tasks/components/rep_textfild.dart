@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todotasks/utils/app_str.dart';
 
 class RepTextField extends StatelessWidget {
@@ -17,32 +18,33 @@ class RepTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.symmetric(horizontal: 16),
+      margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(16)),
       child: ListTile(
         title: TextFormField(
           controller: controller,
-          maxLines: !isForDescription ? 6 : null,
-          cursorHeight: isForDescription ? 25 : null,
-          style: const TextStyle(
+          maxLines:!isForDescription? 6 : null,
+          cursorHeight: isForDescription? 25 : null,
+          style: TextStyle(
             color: Colors.black,
+            fontSize: ScreenUtil().setSp(16),
           ),
           decoration: InputDecoration(
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(ScreenUtil().setWidth(10)),
               borderSide: BorderSide(
                 color: Colors.grey.shade300,
               ),
             ),
             counter: Container(),
             prefixIcon: isForDescription
-                ? const Icon(Icons.bookmark_border, color: Colors.grey)
+               ? Icon(Icons.bookmark_border, color: Colors.grey, size: ScreenUtil().setWidth(24))
                 : null,
             hintText: isForDescription
-                ? AppStr.addNote
+               ? AppStr.addNote
                 : AppStr.titleOfTitleTextField,
-            hintStyle: textTheme.titleMedium,
+            hintStyle: textTheme.titleMedium?.copyWith(fontSize: ScreenUtil().setSp(16)),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(ScreenUtil().setWidth(10)),
               borderSide: BorderSide(
                 color: Colors.grey.shade300,
               ),

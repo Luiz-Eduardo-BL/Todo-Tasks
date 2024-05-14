@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../utils/app_colors.dart';
 
@@ -17,15 +18,15 @@ class TaskWidget extends StatelessWidget {
         log("Tarefa View");
       },
       child: AnimatedContainer(
-        margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+        margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(18), vertical: ScreenUtil().setHeight(8)),
         decoration: BoxDecoration(
           color: AppColors.primaryColor.withOpacity(0.2),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(ScreenUtil().setWidth(12)),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(.1),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+              blurRadius: ScreenUtil().setWidth(10),
+              offset: Offset(0, ScreenUtil().setWidth(4)),
             ),
           ],
         ),
@@ -44,7 +45,7 @@ class TaskWidget extends StatelessWidget {
                 border:
                 Border.all(
                   color: Colors.grey,
-                  width: .8,
+                  width: ScreenUtil().setWidth(.8),
                 ),
               ),
               child: const Icon(
@@ -54,9 +55,9 @@ class TaskWidget extends StatelessWidget {
             ),
           ),
 
-          title: const Padding(
-            padding: EdgeInsets.only(bottom: 5, top: 3),
-            child: Text(
+          title: Padding(
+            padding: EdgeInsets.only(bottom: ScreenUtil().setHeight(5), top: ScreenUtil().setHeight(3)),
+            child: const Text(
               "Título da tarefa",
               style: TextStyle(
                 color: Colors.black,
@@ -66,10 +67,10 @@ class TaskWidget extends StatelessWidget {
             ),
           ),
 
-          subtitle: const Column(
+          subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 "Descrição da tarefa",
                 style: TextStyle(
                   color: Colors.black,
@@ -81,21 +82,21 @@ class TaskWidget extends StatelessWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: 10, top: 10),
+                  padding: EdgeInsets.only(bottom: ScreenUtil().setHeight(10), top: ScreenUtil().setHeight(10)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
                           "Data: ",
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: ScreenUtil().setSp(14),
                             color: Colors.black,
                           )
                       ),
                       Text(
                           "Hora: ",
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: ScreenUtil().setSp(14),
                             color: Colors.black,
                           )
                       ),

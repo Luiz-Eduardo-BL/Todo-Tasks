@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todotasks/views/tasks/task_view.dart';
 import '../../../utils/app_colors.dart';
 
@@ -18,16 +19,16 @@ class Fab extends StatelessWidget {
             context, CupertinoPageRoute(builder: (_) => const TaskView()));
       },
       child: Container(
-        width: 70,
-        height: 70,
+        width: ScreenUtil().setWidth(70),
+        height: ScreenUtil().setWidth(70),
         decoration: BoxDecoration(
           color: AppColors.primaryColor,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(ScreenUtil().setWidth(20)),
         ),
         child: const Icon(
           Icons.add,
           color: Colors.white,
-          size: 30,
+          size: 30, // Fixed: Use a constant value instead of ScreenUtil().setSp(30)
         ),
       ),
     );
