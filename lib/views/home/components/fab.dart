@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:todotasks/views/tasks/task_view.dart';
 import '../../../utils/app_colors.dart';
 
 class Fab extends StatelessWidget {
@@ -12,8 +14,8 @@ class Fab extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Navigator.pushNamed(context, '/addTask');
-        log("Tarefa View");
+        Navigator.push(
+            context, CupertinoPageRoute(builder: (_) => const TaskView()));
       },
       child: Container(
         width: 70,
