@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:todotasks/extensions/space_exs.dart';
@@ -101,7 +99,7 @@ class _TaskViewState extends State<TaskView> {
     );
   }
 
-  Widget _buildMainTaskViewActivity(TextTheme textTheme, BuildContext context) {
+    Widget _buildMainTaskViewActivity(TextTheme textTheme, BuildContext context) {
     return SizedBox(
       width: double.infinity,
       height: 530,
@@ -116,49 +114,35 @@ class _TaskViewState extends State<TaskView> {
               textTheme: textTheme),
           DateTimeSelectionWidget(
             selectedTime: selectedTime,
-            onTap: () {
-              showModalBottomSheet(
+            onTap: () async {
+              final TimeOfDay? pickedTime = await showTimePicker(
                 context: context,
-                builder: (_) => SizedBox(
-                  width: double.infinity,
-                  height: 400,
-                  child: CupertinoTimerPicker(
-                      onTimerDurationChanged: (value) {
-                        setState(() {
-                          selectedTime = TimeOfDay(
-                              hour: value.inHours,
-                              minute: value.inMinutes.remainder(60));
-                        });
-                      },
-                      initialTimerDuration: Duration(
-                          hours: selectedTime.hour,
-                          minutes: selectedTime.minute)),
-                ),
+                initialTime: selectedTime,
               );
+              if (pickedTime != null && pickedTime != selectedTime) {
+                setState(() {
+                  selectedTime = pickedTime;
+                });
+              }
             },
             title: AppStr.timeString,
           ),
           DateTimeSelectionWidget(
             selectedTime: selectedTime,
-            onTap: () {
-              showModalBottomSheet(
+            onTap: () async {
+              var selectedDate;
+              final DateTime? pickedDate = await showDatePicker(
                 context: context,
-                builder: (_) => SizedBox(
-                  width: double.infinity,
-                  height: 400,
-                  child: CupertinoDatePicker(
-                    mode: CupertinoDatePickerMode.date,
-                    initialDateTime: DateTime.now(),
-                    onDateTimeChanged: (value) {
-                      setState(() {
-                        const Locale('pt', 'BR');
-                        selectedTime = TimeOfDay.fromDateTime(value);
-                      });
-                      //FocusScope.of(context).requestFocus(FocusNode());
-                    },
-                  ),
-                ),
+                initialDate: selectedDate ?? DateTime.now(),
+                firstDate: DateTime.now().subtract(const Duration(days: 365 * 100)),
+                lastDate: DateTime.now().add(const Duration(days: 365 * 200)),
               );
+              if (pickedDate != null && pickedDate != selectedDate) {
+                setState(() {
+                  selectedDate = pickedDate;
+                  selectedTime = TimeOfDay.fromDateTime(selectedDate!);
+                });
+              }
             },
             title: AppStr.dateString,
           ),

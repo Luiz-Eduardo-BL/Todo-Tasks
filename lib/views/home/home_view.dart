@@ -59,7 +59,7 @@ class _HomeViewState extends State<HomeView> {
 
         children: [
           Container(
-            margin: EdgeInsets.only(top: ScreenUtil().setHeight(50)),
+            margin: EdgeInsets.only(top: ScreenUtil().setHeight(10)),
             width: double.infinity,
             height: ScreenUtil().setHeight(100),
             child: Row(
@@ -77,7 +77,7 @@ class _HomeViewState extends State<HomeView> {
                   ),
                 ),
 
-                25.w,
+                10.w,
 
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,

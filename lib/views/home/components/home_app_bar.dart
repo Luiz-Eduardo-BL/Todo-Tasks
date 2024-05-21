@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
+import 'package:todotasks/utils/constants.dart';
 
 class HomeAppBar extends StatefulWidget {
   const HomeAppBar({super.key, required this.drawerKey});
@@ -67,7 +68,7 @@ class _HomeAppBarState extends State<HomeAppBar>
                   icon: AnimatedIcons.menu_close,
                   progress: animatecontroller,
                   size: ScreenUtil()
-                      .setWidth(30), // Use ScreenUtil to set the icon size
+                      .setWidth(20), // Use ScreenUtil to set the icon size
                 ),
               ),
             ),
@@ -76,7 +77,9 @@ class _HomeAppBarState extends State<HomeAppBar>
                   right: ScreenUtil()
                       .setWidth(20)), // Use ScreenUtil to set the padding
               child: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  deleteAllTaskWarning(context);
+                },
                 icon: const Icon(
                   CupertinoIcons.trash_fill,
                   size: 25,

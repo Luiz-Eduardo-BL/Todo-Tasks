@@ -1,15 +1,69 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter/services.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:todotasks/data/hive_data_store.dart';
+import 'package:todotasks/model/task.dart';
+
 import 'package:todotasks/views/home/home_view.dart';
-import 'package:todotasks/views/tasks/task_view.dart';
+
 
 Future<void> main() async {
-  runApp(
-    ScreenUtilInit(
-      designSize: const Size(375, 812), // Replace with your desired design size
-      builder: (context, child) => const MyApp(),
+  await Hive.initFlutter();
+
+  Hive.registerAdapter<Task>(TaskAdapter());
+
+  Box box = await Hive.openBox<Task>(HiveDataStore.boxName);
+
+  box.values.forEach(
+    (task) {
+      if (task.createdAtTime.day != DateTime.now().day) {
+        task.delete();
+      } else {
+
+      }
+    },
+  );
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.dark,
     ),
   );
+  runApp(
+    BaseWidget(
+      child: ScreenUtilInit(
+        designSize: const Size(375, 812), // iPhone 12
+        builder: (context, child) => const MyApp(),
+      ),
+    ),
+  );
+}
+
+class BaseWidget extends InheritedWidget {
+  BaseWidget({Key? key, required this.child}) : super(key: key, child: child);
+
+  final HiveDataStore dataStore = HiveDataStore();
+  final Widget child;
+
+  static BaseWidget of(BuildContext context) {
+    final base = context.dependOnInheritedWidgetOfExactType<BaseWidget>();
+    if (base != null) {
+      return base;
+    } else {
+      throw StateError('Could not find ancestor with type BaseWidget');
+    }
+  }
+
+  @override
+  bool updateShouldNotify(covariant InheritedWidget oldWidget) {
+    return false;
+  }
 }
 
 class MyApp extends StatelessWidget {

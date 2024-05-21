@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,7 +14,7 @@ class Fab extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, CupertinoPageRoute(builder: (_) => const TaskView()));
+          context, CupertinoPageRoute(builder: (_) => const TaskView()));
       },
       child: Container(
         width: ScreenUtil().setWidth(70),
