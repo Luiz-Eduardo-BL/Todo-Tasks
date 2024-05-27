@@ -1,26 +1,67 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+import 'package:todotasks/model/task.dart';
+import 'package:todotasks/views/tasks/task_view.dart';
 
 import '../../../utils/app_colors.dart';
 
-class TaskWidget extends StatelessWidget {
+class TaskWidget extends StatefulWidget {
   const TaskWidget({
     super.key,
+    required this.task,
   });
+
+  final Task task;
+
+  @override
+  _TaskWidgetState createState() => _TaskWidgetState();
+}
+
+class _TaskWidgetState extends State<TaskWidget> {
+  TextEditingController textEditingControllerForTitle = TextEditingController();
+  TextEditingController textEditingControllerForDescription =
+      TextEditingController();
+
+  @override
+  void initState() {
+    textEditingControllerForTitle.text = widget.task.title;
+    textEditingControllerForDescription.text = widget.task.description;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    textEditingControllerForTitle.dispose();
+    textEditingControllerForDescription.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Navegar para task view com as informaçoes da tarefa
-        log("Tarefa View");
+        Navigator.push(
+            context,
+            CupertinoPageRoute(
+                builder: (ctx) => TaskView(
+                      titleTaskController: textEditingControllerForTitle,
+                      descriptionTaskControlle:
+                          textEditingControllerForDescription,
+                      task: widget.task,
+                    )));
       },
       child: AnimatedContainer(
-        margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(18), vertical: ScreenUtil().setHeight(8)),
+        margin: EdgeInsets.symmetric(
+            horizontal: ScreenUtil().setWidth(18),
+            vertical: ScreenUtil().setHeight(8)),
         decoration: BoxDecoration(
-          color: AppColors.primaryColor.withOpacity(0.2),
+          color: widget.task.isCompleted
+              ? AppColors.primaryColor.withOpacity(0.2)
+              : Colors.white,
           borderRadius: BorderRadius.circular(ScreenUtil().setWidth(12)),
           boxShadow: [
             BoxShadow(
@@ -34,16 +75,17 @@ class TaskWidget extends StatelessWidget {
         child: ListTile(
           leading: GestureDetector(
             onTap: () {
-              // Navigator.pushNamed(context, '/addTask');
-              log("Tarefa View");
+              widget.task.isCompleted = !widget.task.isCompleted;
+              widget.task.save();
             },
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 600),
               decoration: BoxDecoration(
-                color: AppColors.primaryColor,
+                color: widget.task.isCompleted
+                    ? AppColors.primaryColor
+                    : Colors.white,
                 shape: BoxShape.circle,
-                border:
-                Border.all(
+                border: Border.all(
                   color: Colors.grey,
                   width: ScreenUtil().setWidth(.8),
                 ),
@@ -54,52 +96,64 @@ class TaskWidget extends StatelessWidget {
               ),
             ),
           ),
-
           title: Padding(
-            padding: EdgeInsets.only(bottom: ScreenUtil().setHeight(5), top: ScreenUtil().setHeight(3)),
-            child: const Text(
-              "Título da tarefa",
+            padding: EdgeInsets.only(
+                bottom: ScreenUtil().setHeight(7),
+                top: ScreenUtil().setHeight(7)),
+            child: Text(
+              textEditingControllerForTitle.text,
               style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
-                // decoration: TextDecoration.lineThrough,
+                color: widget.task.isCompleted
+                    ? AppColors.primaryColor
+                    : Colors.black,
+                fontWeight: FontWeight.w700,
+                decoration: widget.task.isCompleted
+                    ? TextDecoration.lineThrough
+                    : TextDecoration.none,
               ),
             ),
           ),
-
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Descrição da tarefa",
+              Text(
+                textEditingControllerForDescription.text,
                 style: TextStyle(
-                  color: Colors.black,
+                  color: widget.task.isCompleted
+                      ? AppColors.primaryColor
+                      : Colors.black,
                   fontWeight: FontWeight.w300,
-                  // decoration: TextDecoration.lineThrough,
+                  decoration: widget.task.isCompleted
+                      ? TextDecoration.lineThrough
+                      : TextDecoration.none,
                 ),
               ),
-
               Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: ScreenUtil().setHeight(10), top: ScreenUtil().setHeight(10)),
+                  padding: EdgeInsets.only(
+                      bottom: ScreenUtil().setHeight(10),
+                      top: ScreenUtil().setHeight(10)),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                          "Data: ",
+                          DateFormat('dd/MM/yyyy')
+                              .format(widget.task.createdAtDate),
                           style: TextStyle(
                             fontSize: ScreenUtil().setSp(14),
-                            color: Colors.black,
-                          )
-                      ),
+                            color: widget.task.isCompleted
+                                ? Colors.white
+                                : Colors.grey,
+                          )),
                       Text(
-                          "Hora: ",
+                          DateFormat('HH:mm').format(widget.task.createdAtDate),
                           style: TextStyle(
                             fontSize: ScreenUtil().setSp(14),
-                            color: Colors.black,
-                          )
-                      ),
+                            color: widget.task.isCompleted
+                                ? Colors.white
+                                : Colors.grey,
+                          )),
                     ],
                   ),
                 ),

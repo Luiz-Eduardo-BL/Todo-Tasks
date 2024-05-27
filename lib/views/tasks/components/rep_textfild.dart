@@ -7,10 +7,18 @@ class RepTextField extends StatelessWidget {
     super.key,
     required this.controller,
     required this.textTheme,
-    this.isForDescription = false,
+    this.isForDescription = false, 
+    required this.onFieldSubmitted, 
+    required this.onChanged, 
+    required FocusNode focusNode
   });
 
   final TextEditingController controller;
+  final Function(String)? onFieldSubmitted;
+  final Function(String)? onChanged;
+
+  final bool _hasFocus = true;
+
   final bool isForDescription;
   final TextTheme textTheme;
 
@@ -22,8 +30,8 @@ class RepTextField extends StatelessWidget {
       child: ListTile(
         title: TextFormField(
           controller: controller,
-          maxLines:!isForDescription? 6 : null,
-          cursorHeight: isForDescription? 25 : null,
+          maxLines: !isForDescription ? 6 : null,
+          cursorHeight: isForDescription ? 25 : null,
           style: TextStyle(
             color: Colors.black,
             fontSize: ScreenUtil().setSp(16),
@@ -37,12 +45,14 @@ class RepTextField extends StatelessWidget {
             ),
             counter: Container(),
             prefixIcon: isForDescription
-               ? Icon(Icons.bookmark_border, color: Colors.grey, size: ScreenUtil().setWidth(24))
+                ? Icon(Icons.bookmark_border,
+                    color: Colors.grey, size: ScreenUtil().setWidth(24))
                 : null,
             hintText: isForDescription
-               ? AppStr.addNote
+                ? AppStr.addNote
                 : AppStr.titleOfTitleTextField,
-            hintStyle: textTheme.titleMedium?.copyWith(fontSize: ScreenUtil().setSp(16)),
+            hintStyle: textTheme.titleMedium
+                ?.copyWith(fontSize: ScreenUtil().setSp(16)),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(ScreenUtil().setWidth(10)),
               borderSide: BorderSide(
@@ -50,8 +60,8 @@ class RepTextField extends StatelessWidget {
               ),
             ),
           ),
-          onFieldSubmitted: (value) {},
-          onChanged: (value) {},
+          onFieldSubmitted: onFieldSubmitted,
+          onChanged: onChanged,
         ),
       ),
     );
