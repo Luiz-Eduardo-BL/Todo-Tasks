@@ -27,15 +27,6 @@ class Task extends HiveObject {
   @HiveField(5)
   bool isCompleted;
 
-  // factory Task.fromJson(Map<String, dynamic> json) => Task(
-  //   id: json["id"],
-  //   title: json["title"],
-  //   description: json["description"],
-  //   createdAtTime: DateTime.parse(json["createdAtTime"]),
-  //   createdAtDate: DateTime.parse(json["createdAtDate"]),
-  //   isCompleted: json["isCompleted"],
-  // );
-
   factory Task.create({
     required String? title,
     required String? description,

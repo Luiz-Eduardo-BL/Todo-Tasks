@@ -7,7 +7,6 @@ import 'package:todotasks/model/task.dart';
 
 import 'package:todotasks/views/home/home_view.dart';
 
-
 Future<void> main() async {
   await Hive.initFlutter();
 

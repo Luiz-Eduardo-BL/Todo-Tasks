@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -52,6 +50,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                       descriptionTaskControlle:
                           textEditingControllerForDescription,
                       task: widget.task,
+                      isUpdate: true,
                     )));
       },
       child: AnimatedContainer(
@@ -147,7 +146,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                                 : Colors.grey,
                           )),
                       Text(
-                          DateFormat('HH:mm').format(widget.task.createdAtDate),
+                          DateFormat('HH:mm').format(widget.task.createdAtTime),
                           style: TextStyle(
                             fontSize: ScreenUtil().setSp(14),
                             color: widget.task.isCompleted

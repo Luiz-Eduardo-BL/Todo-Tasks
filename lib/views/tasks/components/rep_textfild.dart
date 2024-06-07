@@ -10,7 +10,6 @@ class RepTextField extends StatelessWidget {
     this.isForDescription = false, 
     required this.onFieldSubmitted, 
     required this.onChanged, 
-    required FocusNode focusNode
   });
 
   final TextEditingController controller;

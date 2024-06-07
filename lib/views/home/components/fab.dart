@@ -18,6 +18,7 @@ class Fab extends StatelessWidget {
             task: null,
             titleTaskController: null,
             descriptionTaskControlle: null,
+            isUpdate: false,
         )));
       },
       child: Container(
