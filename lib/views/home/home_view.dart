@@ -86,7 +86,7 @@ class _HomeViewState extends State<HomeView> {
       child: Column(
         children: [
           Container(
-              margin: EdgeInsets.only(top: ScreenUtil().setHeight(10)),
+              margin: EdgeInsets.only(top: ScreenUtil().setHeight(8)),
               width: double.infinity,
               height: ScreenUtil().setHeight(100),
               child: Row(
@@ -163,13 +163,16 @@ class _HomeViewState extends State<HomeView> {
                   : Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        FadeIn(
-                          child: SizedBox(
-                            width: ScreenUtil().setWidth(200),
-                            height: ScreenUtil().setWidth(200),
-                            child: Lottie.asset(
-                              lottieURL,
-                              animate: tasks.isNotEmpty ? false : true,
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 20),
+                          child: FadeIn(
+                            child: SizedBox(
+                              width: ScreenUtil().setWidth(200),
+                              height: ScreenUtil().setWidth(200),
+                              child: Lottie.asset(
+                                lottieURL,
+                                animate: tasks.isNotEmpty ? false : true,
+                              ),
                             ),
                           ),
                         ),

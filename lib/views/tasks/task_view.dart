@@ -44,13 +44,15 @@ class _TaskViewState extends State<TaskView> {
   void initState() {
     super.initState();
     titleTaskController = widget.titleTaskController ?? TextEditingController();
-    descriptionTaskControlle = widget.descriptionTaskControlle ?? TextEditingController();
+    descriptionTaskControlle =
+        widget.descriptionTaskControlle ?? TextEditingController();
 
     if (widget.isUpdate && widget.task != null) {
       title = widget.task?.title;
       description = widget.task?.description;
       selectedDate = widget.task?.createdAtDate;
-      selectedTime = TimeOfDay.fromDateTime(widget.task?.createdAtTime ?? DateTime.now());
+      selectedTime =
+          TimeOfDay.fromDateTime(widget.task?.createdAtTime ?? DateTime.now());
 
       titleTaskController.text = title ?? '';
       descriptionTaskControlle.text = description ?? '';
@@ -59,24 +61,27 @@ class _TaskViewState extends State<TaskView> {
 
   @override
   void dispose() {
-    // titleTaskController.dispose();
-    // descriptionTaskControlle.dispose();
     super.dispose();
   }
 
   bool isTaskValid() {
-    return titleTaskController.text.isNotEmpty && descriptionTaskControlle.text.isNotEmpty;
+    return titleTaskController.text.isNotEmpty &&
+        descriptionTaskControlle.text.isNotEmpty;
   }
 
   dynamic isTaskAlreadyExistUpdateOtherWiseCreate() {
     if (isTaskValid()) {
       if (widget.isUpdate) {
-        // Atualizar a tarefa existente
         try {
-            widget.task?.title = titleTaskController.text;
-            widget.task?.description = descriptionTaskControlle.text;
-            widget.task?.createdAtDate = selectedDate!;
-            widget.task?.createdAtTime = DateTime(selectedDate!.year, selectedDate!.month, selectedDate!.day, selectedTime.hour, selectedTime.minute);
+          widget.task?.title = titleTaskController.text;
+          widget.task?.description = descriptionTaskControlle.text;
+          widget.task?.createdAtDate = selectedDate!;
+          widget.task?.createdAtTime = DateTime(
+              selectedDate!.year,
+              selectedDate!.month,
+              selectedDate!.day,
+              selectedTime.hour,
+              selectedTime.minute);
 
           widget.task?.save();
 
@@ -85,12 +90,12 @@ class _TaskViewState extends State<TaskView> {
           updateTaskWarning(context);
         }
       } else {
-        // Criar uma nova tarefa
         var task = Task.create(
           title: titleTaskController.text,
           description: descriptionTaskControlle.text,
           createdAtDate: selectedDate,
-          createdAtTime: DateTime(selectedDate!.year, selectedDate!.month, selectedDate!.day, selectedTime.hour, selectedTime.minute),
+          createdAtTime: DateTime(selectedDate!.year, selectedDate!.month,
+              selectedDate!.day, selectedTime.hour, selectedTime.minute),
         );
         BaseWidget.of(context).dataStore.addTask(task: task);
 
@@ -187,7 +192,9 @@ class _TaskViewState extends State<TaskView> {
               ),
               5.w,
               Text(
-                widget.isUpdate ? AppStr.updateTaskString : AppStr.addTaskString,
+                widget.isUpdate
+                    ? AppStr.updateTaskString
+                    : AppStr.addTaskString,
                 style: const TextStyle(
                   color: Colors.white,
                 ),
@@ -236,7 +243,8 @@ class _TaskViewState extends State<TaskView> {
               final DateTime? pickedDate = await showDatePicker(
                 context: context,
                 initialDate: selectedDate ?? DateTime.now(),
-                firstDate: DateTime.now().subtract(const Duration(days: 365 * 100)),
+                firstDate:
+                    DateTime.now().subtract(const Duration(days: 365 * 100)),
                 lastDate: DateTime.now().add(const Duration(days: 365 * 200)),
               );
               if (pickedDate != null && pickedDate != selectedDate) {
@@ -280,7 +288,7 @@ class _TaskViewState extends State<TaskView> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            width: ScreenUtil().setWidth(52),
+            width: ScreenUtil().setWidth(62),
             child: const Divider(
               thickness: 2,
             ),
@@ -288,20 +296,23 @@ class _TaskViewState extends State<TaskView> {
           SizedBox(
             width: ScreenUtil().setWidth(200),
             child: RichText(
+                textAlign: TextAlign.center,
                 text: TextSpan(
-              text: widget.isUpdate ? AppStr.updateCurrentTask : AppStr.addNewTask,
-              style: textTheme.titleLarge,
-              children: const [
-                TextSpan(
-                    text: AppStr.taskStrnig,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                    )),
-              ],
-            )),
+                  text: widget.isUpdate
+                      ? AppStr.updateCurrentTask
+                      : AppStr.addNewTask,
+                  style: textTheme.titleLarge,
+                  children: const [
+                    TextSpan(
+                        text: AppStr.taskStrnig,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                        )),
+                  ],
+                )),
           ),
           SizedBox(
-            width: ScreenUtil().setWidth(52),
+            width: ScreenUtil().setWidth(62),
             child: const Divider(
               thickness: 2,
             ),
