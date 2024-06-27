@@ -1,37 +1,66 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:lottie/lottie.dart';
 import 'package:todotasks/extensions/space_exs.dart';
 
 import 'package:todotasks/utils/app_colors.dart';
 
 class CustomDrawer extends StatefulWidget {
-  CustomDrawer({super.key});
+  const CustomDrawer({super.key});
 
   @override
   _CustomDrawerState createState() => _CustomDrawerState();
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
+  bool _isEditing = false;
+  bool _showOptions = true;
+
+  String _userName = 'Usuario';
+  String _userRole = 'Função';
 
   final List<IconData> icons = [
-    CupertinoIcons.home,
-    CupertinoIcons.calendar,
-    CupertinoIcons.person_fill,
-    CupertinoIcons.settings,
+    CupertinoIcons.timer_fill,
     CupertinoIcons.info_circle_fill,
   ];
 
   final List<String> texts = [
-    'Home',
-    'Calendário',
-    'Perfil',
-    'Configurações',
+    'Pomodoro',
     'Sobre',
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    loadPreferences();
+  }
+
+  Future<void> savePreferences() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('', _userName);
+    await prefs.setString('', _userRole);
+    await prefs.setBool('isEditing', _isEditing);
+    await prefs.setBool('showOptions', _showOptions);
+    await prefs.setString('selectedAvatar', selectedAvatar);
+  }
+
+  Future<void> loadPreferences() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _userName = prefs.getString('') ?? 'Usuario';
+      _userRole = prefs.getString('') ?? 'Função';
+      _isEditing = prefs.getBool('isEditing') ?? false;
+      _showOptions = prefs.getBool('showOptions') ?? true;
+      selectedAvatar =
+          prefs.getString('selectedAvatar') ?? 'assets/lottie/Homem.json';
+    });
+  }
 
   String selectedAvatar = 'assets/lottie/Homem.json';
 
@@ -48,6 +77,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
         ),
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment:
+            CrossAxisAlignment.center,
         children: [
           GestureDetector(
             onTap: () {
@@ -60,46 +92,153 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ),
           ),
           20.h,
-          Text(
-            'Nome do Usuário',
-            style: textTheme.displayMedium
-          ),
-          Text(
-            'Mobile Developer',
-            style: textTheme.displaySmall
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(
-              horizontal: ScreenUtil().setWidth(30),
-              vertical: ScreenUtil().setHeight(20),
-            ),
-            width: double.infinity,
-            height: ScreenUtil().setHeight(400), // erro talvez aq 
-            child: ListView.builder(
-              itemCount: icons.length,
-              itemBuilder: (BuildContext context, int index) {
-                return InkWell(
-                  onTap: () {
-                    log('${texts[index]}tem Selecionado!');
-                  },
-                  child: Container(
-                    margin: EdgeInsets.all(ScreenUtil().setWidth(5)),
-                    child: ListTile(
-                      leading: Icon(
-                        icons[index],
-                        color: Colors.white,
-                        size: ScreenUtil().setWidth(25),
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                _isEditing = true;
+                _showOptions = false;
+                loadPreferences();
+              });
+            },
+            child: _isEditing
+                ? Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: _userName,
+                        hintStyle:
+                            const TextStyle(color: Colors.black, fontSize: 16),
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                            color: Colors.black,
+                            width: 1,
+                            style: BorderStyle.solid,
+                          ),
+                        ),
                       ),
-                      title: Text(
-                        texts[index],
-                        style: textTheme.displaySmall
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          _userName = value;
+                        });
+                        savePreferences();
+                      },
+                    ),
+                  )
+                : Text(
+                    _userName,
+                    style: textTheme.displayMedium,
+                  ),
+          ),
+          5.h,
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                _isEditing = true;
+                _showOptions = false;
+              });
+            },
+            child: _isEditing
+                ? Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: _userRole,
+                        hintStyle: const TextStyle(
+                            color: Colors.black,
+                            fontSize:
+                                16), // textTheme.displaySmall.copyWith(fontSize: 16
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                            color: Colors.black,
+                            width: 1,
+                            style: BorderStyle.solid,
+                          ),
+                        ),
+                      ),
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          _userRole = value;
+                        });
+                        savePreferences();
+                      },
+                    ),
+                  )
+                : Text(
+                    _userRole,
+                    style: textTheme.displaySmall,
+                  ),
+          ),
+          20.h,
+          if (_isEditing)
+            ElevatedButton(
+              onPressed: () {
+                savePreferences();
+                setState(() {
+                  _isEditing = false;
+                  _showOptions = true;
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.black,
+                backgroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              child: Text(
+                'Salvar',
+                style: TextStyle(
+                  fontSize: ScreenUtil().setSp(16),
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          if (_showOptions)
+            Container(
+              margin: EdgeInsets.symmetric(
+                horizontal: ScreenUtil().setWidth(30),
+                vertical: ScreenUtil().setHeight(20),
+              ),
+              width: double.infinity,
+              height: ScreenUtil().setHeight(400),
+              child: ListView.builder(
+                itemCount: icons.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return InkWell(
+                    onTap: () {
+                      log('${texts[index]}tem Selecionado!');
+                    },
+                    child: Container(
+                      margin: EdgeInsets.all(ScreenUtil().setWidth(5)),
+                      child: ListTile(
+                        leading: Icon(
+                          icons[index],
+                          color: Colors.white,
+                          size: ScreenUtil().setWidth(25),
+                        ),
+                        title:
+                            Text(texts[index], style: textTheme.displaySmall),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-          ),
         ],
       ),
     );
