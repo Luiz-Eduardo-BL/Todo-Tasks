@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +14,7 @@ class CustomDrawer extends StatefulWidget {
   const CustomDrawer({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _CustomDrawerState createState() => _CustomDrawerState();
 }
 
@@ -43,8 +43,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   Future<void> savePreferences() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('', _userName);
-    await prefs.setString('', _userRole);
+    await prefs.setString('username', _userName);
+    await prefs.setString('userRole', _userRole);
     await prefs.setBool('isEditing', _isEditing);
     await prefs.setBool('showOptions', _showOptions);
     await prefs.setString('selectedAvatar', selectedAvatar);
@@ -53,8 +53,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
   Future<void> loadPreferences() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _userName = prefs.getString('') ?? 'Usuario';
-      _userRole = prefs.getString('') ?? 'Função';
+      _userName = prefs.getString('username') ?? 'Usuario';
+      _userRole = prefs.getString('userRole') ?? 'Função';
       _isEditing = prefs.getBool('isEditing') ?? false;
       _showOptions = prefs.getBool('showOptions') ?? true;
       selectedAvatar =
@@ -78,8 +78,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment:
-            CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           GestureDetector(
             onTap: () {
@@ -219,22 +218,49 @@ class _CustomDrawerState extends State<CustomDrawer> {
               child: ListView.builder(
                 itemCount: icons.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    onTap: () {
-                      log('${texts[index]}tem Selecionado!');
-                    },
-                    child: Container(
-                      margin: EdgeInsets.all(ScreenUtil().setWidth(5)),
-                      child: ListTile(
-                        leading: Icon(
-                          icons[index],
-                          color: Colors.white,
-                          size: ScreenUtil().setWidth(25),
+                  return Stack(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          if (index == 0 || index == 1) {
+                            // Handle "Em Breve" functionality (e.g., show a dialog)
+                            return;
+                          }
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(ScreenUtil().setWidth(5)),
+                          child: ListTile(
+                            leading: Icon(
+                              icons[index],
+                              color: Colors.white,
+                              size: ScreenUtil().setWidth(25),
+                            ),
+                            title: Text(texts[index],
+                                style: textTheme.displaySmall),
+                          ),
                         ),
-                        title:
-                            Text(texts[index], style: textTheme.displaySmall),
                       ),
-                    ),
+                      if (index == 0 || index == 1)
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: const Text(
+                              "Em Breve",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
                   );
                 },
               ),

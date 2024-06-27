@@ -14,15 +14,13 @@ Future<void> main() async {
 
   Box box = await Hive.openBox<Task>(HiveDataStore.boxName);
 
-  box.values.forEach(
-    (task) {
+  for (var task in box.values) {
       if (task.createdAtTime.day != DateTime.now().day) {
         task.delete();
       } else {
 
       }
-    },
-  );
+    }
 
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -45,7 +43,7 @@ Future<void> main() async {
 }
 
 class BaseWidget extends InheritedWidget {
-  BaseWidget({Key? key, required this.child}) : super(key: key, child: child);
+  BaseWidget({super.key, required this.child}) : super(child: child);
 
   final HiveDataStore dataStore = HiveDataStore();
   final Widget child;

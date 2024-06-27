@@ -65,7 +65,7 @@ class _HomeViewState extends State<HomeView> {
                 key: drawerKey,
                 isDraggable: false,
                 animationDuration: 1000,
-                slider: CustomDrawer(),
+                slider: const CustomDrawer(),
                 appBar: HomeAppBar(
                   drawerKey: drawerKey,
                 ),

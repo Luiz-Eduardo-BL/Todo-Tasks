@@ -34,7 +34,9 @@ class _TaskViewState extends State<TaskView> {
   DateTime? selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
 
+  // ignore: prefer_typing_uninitialized_variables
   var title;
+  // ignore: prefer_typing_uninitialized_variables
   var description;
 
   late TextEditingController titleTaskController;

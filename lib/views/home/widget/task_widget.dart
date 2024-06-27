@@ -16,6 +16,7 @@ class TaskWidget extends StatefulWidget {
   final Task task;
 
   @override
+  // ignore: library_private_types_in_public_api
   _TaskWidgetState createState() => _TaskWidgetState();
 }
 
